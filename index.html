@@ -1,88 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naveen Sekhar | Portfolio</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <div class="logo">
-                    <a href="#">Naveen Sekhar</a>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
 
-    <section id="home">
-        <div class="hero-content">
-            <h1>Hi, I'm <span>Naveen Sekhar</span></h1>
-            <p>Creative Cybersecurity Enthusiast specializing in IoT Security and Ethical Hacking</p>
+  <!-- Sticky NavBar -->
+  <header id="navbar" class="visible">
+    <div class="nav-container">
+      <h2 class="logo">Naveen Sekhar</h2>
+      <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="#" onclick="openContact()">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-            <a href="#projects" class="cta-button">View My Work</a>
-        </div>
-    </section>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Hello, I'm <span class="name">Naveen Sekhar</span></h1>
+      <p id="typing"></p>
+      <div class="status-badge">🟢 Open to Collaborate</div>
+    </div>
+  </section>
 
-    <section id="about" class="colored-section">
-        <div class="container">
-            <h2>About Me</h2>
-            <p>Dedicated to delving into the dynamic intersection of Cybersecurity and IoT, I am currently pursuing my education at Sri Ramachandra Institute of Higher Education and Research Center. With a proactive approach to learning, I am driven to bridge theoretical concepts with hands-on applications, aiming to deliver pioneering solutions in the swiftly evolving tech realm.</p>
-        </div>
-    </section>
+  <!-- About -->
+  <section class="about glass" id="about">
+    <h2>About Me</h2>
+    <p>
+      Hi, I am Naveen, a passionate Cybersecurity and IoT student at Sri Ramachandra Faculty of Engineering and Technology...
+    </p>
+  </section>
 
-    <section id="projects">
-        <div class="container">
-            <h2>Projects</h2>
-            <div class="project-grid">
-                <div class="project-card" style="background-color: #ff7e67;">
-                    <h3>Sweage Monitering system using IOT</h3>
-                    <p>The Sewage Monitoring System leverages Internet of Things (IoT) technology to enhance the management and maintenance of sewage systems.</p>
-                </div>
-                <div class="project-card" style="background-color: #4caf50;">
-                    <h3>Safe-C</h3>
-                    <p>Campus CCTV Monitering system using IOT and edge computing, and tracks the vechicle arounf the Campus.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Latest Projects -->
+  <section class="projects" id="projects">
+    <h2>Latest Projects</h2>
+    <div class="projects-container">
+      <div class="card tilt" onclick="location.href='smart-parking.html'">
+        <h3>Smart Parking System</h3>
+        <p>Raspberry Pi-based system to recognize car plates and manage parking slots in real time.</p>
+        <span>Python • OpenCV • Pi</span>
+        <a href="https://github.com/naveen-sekhar/smart-parking-system" target="_blank" class="github-btn">View on GitHub</a>
+      </div>
+      <div class="card tilt" onclick="location.href='portfolio-project.html'">
+        <h3>Personal Portfolio</h3>
+        <p>This very website — crafted with vanilla HTML/CSS/JS and cool design ideas.</p>
+        <span>HTML • CSS • JS</span>
+        <a href="https://github.com/naveen-sekhar/portfolio" target="_blank" class="github-btn">View on GitHub</a>
+      </div>
+      <div class="card tilt">
+        <h3>Network Scanner</h3>
+        <p>Python-based LAN scanner to detect live hosts and open ports on a network.</p>
+        <span>Python • Sockets</span>
+        <a href="https://github.com/naveen-sekhar/network-scanner" target="_blank" class="github-btn">View on GitHub</a>
+      </div>
+    </div>
+    <p style="margin-top: 2rem;"><a href="projects.html" class="github-btn">View All Projects</a></p>
+  </section>
 
-    <section id="contact" class="colored-section">
-        <div class="container">
-            <h2>Contact Me</h2>
-            <form id="contact-form" onsubmit="return handleSubmit(event)">
-                <div class="form-group">
-                    <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address:</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Your Message:</label>
-                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-                </div>
-                <button type="submit" class="submit-button">Send Message</button>
-            </form>
-            <p id="response-message" style="display: none;"></p>
-        </div>
-    </section>
-    
+  <!-- Contact Drawer -->
+  <div class="contact-drawer" id="contactDrawer">
+    <h3>Contact Me</h3>
+    <div class="status">🟢 Available for projects</div>
+    <p>Email: <a href="mailto:naveensekhar06@gmail.com">naveensekhar06@gmail.com</a></p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/naveensekhar6" target="_blank">naveensekhar6</a></p>
+    <p>GitHub: <a href="https://github.com/naveen-sekhar" target="_blank">naveen-sekhar</a></p>
+    <button onclick="closeContact()">Close</button>
+  </div>
 
-    <footer>
-        <p>&copy; 2024 Naveen Sekhar. All rights reserved.</p>
-    </footer>
+  <button id="backToTop" onclick="scrollToTop()">↑ Back to Top</button>
+  <button class="contact-button" onclick="openContact()">📬 Contact Me</button>
 
-    <script src="script.js"></script>
+  <script src="vanilla-tilt.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
