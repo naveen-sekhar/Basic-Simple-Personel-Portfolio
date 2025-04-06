@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects | Naveen Sekhar</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header id="navbar" class="visible">
+    <div class="nav-container">
+      <h2 class="logo">Naveen Sekhar</h2>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="projects.html" class="active">Projects</a>
+        <a href="#" onclick="openContact()">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="projects" style="margin-top: 120px;">
+    <h2>All Projects</h2>
+    <div class="projects-container">
+      <!-- All Projects -->
+      <div class="card tilt">
+        <h3>Smart Parking System</h3>
+        <p>Automatically detects car license plates using Raspberry Pi, and allocates parking slots in real time.</p>
+        <span>Python • OpenCV • Raspberry Pi</span>
+        <a href="https://github.com/naveen-sekhar/smart-parking-system" target="_blank" class="github-btn">View on GitHub</a>
+      </div>
+
+      <div class="card tilt">
+        <h3>Personal Portfolio</h3>
+        <p>This responsive, animated portfolio website was built from scratch using vanilla HTML/CSS/JS.</p>
+        <span>HTML • CSS • JavaScript</span>
+        <a href="https://github.com/naveen-sekhar/portfolio" target="_blank" class="github-btn">View on GitHub</a>
+      </div>
+
+      <div class="card tilt">
+        <h3>Network Scanner</h3>
+        <p>Simple LAN scanner that finds active IPs and scans open ports using Python sockets.</p>
+        <span>Python • Networking</span>
+        <a href="https://github.com/naveen-sekhar/network-scanner" target="_blank" class="github-btn">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="contact-drawer" id="contactDrawer">
+    <h3>Contact Me</h3>
+    <div class="status">🟢 Available for projects</div>
+    <p>Email: <a href="mailto:naveensekhar06@gmail.com">naveensekhar06@gmail.com</a></p>
+    <p>LinkedIn: <a href="https://www.linkedin.com/in/naveensekhar6" target="_blank">naveensekhar6</a></p>
+    <p>GitHub: <a href="https://github.com/naveen-sekhar" target="_blank">naveen-sekhar</a></p>
+    <button onclick="closeContact()">Close</button>
+  </div>
+
+  <button id="backToTop" onclick="scrollToTop()">↑ Back to Top</button>
+  <button class="contact-button" onclick="openContact()">📬 Contact Me</button>
+
+  <script src="vanilla-tilt.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+  

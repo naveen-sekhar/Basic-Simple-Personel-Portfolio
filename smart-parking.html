@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Parking System</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<header id="navbar">
+  <div class="nav-container">
+    <h2 class="logo">Naveen Sekhar</h2>
+    <nav>
+      <a href="index.html#about">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="#" onclick="openContact()">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="glass" style="margin-top: 120px;">
+  <h2>Smart Parking System</h2>
+  <p>
+    The Smart Parking System is built using a Raspberry Pi 4 and a camera module to capture car number plates and dynamically allocate parking slots. It includes:
+  </p>
+  <ul style="margin-top: 1rem; line-height: 1.6;">
+    <li>Real-time license plate recognition using OpenCV.</li>
+    <li>Entry and exit time logging.</li>
+    <li>Dynamic slot management with a CSV-based database.</li>
+    <li>Trained model deployed on Raspberry Pi.</li>
+  </ul>
+  <p style="margin-top: 1rem;">
+    <strong>Technologies Used:</strong> Python, OpenCV, Raspberry Pi, CSV, Camera Module
+  </p>
+  <a href="https://github.com/naveen-sekhar/smart-parking-system" target="_blank" class="github-btn">View Full Code on GitHub</a>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
