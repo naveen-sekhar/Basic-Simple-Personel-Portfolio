@@ -34,6 +34,16 @@
             border-radius: 15px;
             color: white;
         }
+        .success-card {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        .warning-card {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-radius: 15px;
+            color: white;
+        }
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -84,6 +94,16 @@
             border-radius: 8px;
             padding: 0.75rem;
             margin-top: 1rem;
+        }
+        .target-input {
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .target-input:focus {
+            background: white;
+            border-color: #667eea;
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -192,6 +212,57 @@
                         <div class="text-sm opacity-75 mt-2" id="cgpaGrade">Grade: N/A</div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Target CGPA Calculator -->
+        <div class="mt-8 bg-white rounded-2xl card-shadow p-8">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                    <i class="fas fa-bullseye text-2xl text-green-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Target CGPA Calculator</h2>
+                <p class="text-gray-600">Plan your remaining semesters to achieve your target CGPA</p>
+            </div>
+
+            <form id="targetCgpaForm" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-calendar mr-2 text-blue-500"></i>Total Semesters
+                        </label>
+                        <input type="number" min="1" max="20" id="totalSemesters" 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg target-input transition-all duration-300" 
+                               placeholder="Enter total semesters" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-hourglass-half mr-2 text-orange-500"></i>Remaining Semesters
+                        </label>
+                        <input type="number" min="1" max="20" id="remainingSemesters" 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg target-input transition-all duration-300" 
+                               placeholder="Enter remaining semesters" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-target mr-2 text-red-500"></i>Target CGPA
+                    </label>
+                    <input type="number" step="0.01" min="0" max="10" id="targetCgpa" 
+                           class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg target-input transition-all duration-300" 
+                           placeholder="Enter your target CGPA (0-10)" required>
+                </div>
+
+                <div id="completedSemesterInputs" class="space-y-4"></div>
+
+                <button type="submit" id="calculateTargetBtn" class="w-full btn-primary text-white font-semibold py-4 px-6 rounded-lg hidden">
+                    <i class="fas fa-bullseye mr-2"></i>Calculate Required GPA
+                </button>
+            </form>
+
+            <div id="targetResult" class="hidden mt-8 fade-in">
+                <div id="targetResultContent"></div>
             </div>
         </div>
 
@@ -389,6 +460,142 @@
             document.getElementById('cgpaGrade').textContent = `Overall Grade: ${grade}`;
             
             const resultDiv = document.getElementById('cgpaResult');
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('pulse-animation');
+            
+            setTimeout(() => {
+                resultDiv.classList.remove('pulse-animation');
+            }, 2000);
+        });
+
+        // Target CGPA Calculator
+        document.getElementById('totalSemesters').addEventListener('input', updateCompletedSemesterInputs);
+        document.getElementById('remainingSemesters').addEventListener('input', updateCompletedSemesterInputs);
+
+        function updateCompletedSemesterInputs() {
+            const totalSemesters = parseInt(document.getElementById('totalSemesters').value) || 0;
+            const remainingSemesters = parseInt(document.getElementById('remainingSemesters').value) || 0;
+            const completedSemesters = totalSemesters - remainingSemesters;
+            
+            const container = document.getElementById('completedSemesterInputs');
+            const calculateBtn = document.getElementById('calculateTargetBtn');
+            
+            container.innerHTML = '';
+            
+            if (completedSemesters > 0 && completedSemesters <= totalSemesters && remainingSemesters > 0) {
+                const headerDiv = document.createElement('div');
+                headerDiv.innerHTML = `
+                    <h4 class="font-semibold text-gray-700 mb-4">
+                        <i class="fas fa-history mr-2 text-green-500"></i>Completed Semester GPAs (${completedSemesters} semesters)
+                    </h4>
+                `;
+                container.appendChild(headerDiv);
+                
+                for (let i = 1; i <= completedSemesters; i++) {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-bookmark mr-2 text-indigo-500"></i>Semester ${i} GPA
+                        </label>
+                        <input type="number" step="0.01" min="0" max="10" 
+                               class="target-input w-full px-4 py-3 rounded-lg transition-all duration-300" 
+                               placeholder="Enter GPA for semester ${i}" required>
+                    `;
+                    container.appendChild(div);
+                }
+                calculateBtn.classList.remove('hidden');
+            } else {
+                calculateBtn.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('targetCgpaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const totalSemesters = parseInt(document.getElementById('totalSemesters').value);
+            const remainingSemesters = parseInt(document.getElementById('remainingSemesters').value);
+            const targetCgpa = parseFloat(document.getElementById('targetCgpa').value);
+            const completedSemesters = totalSemesters - remainingSemesters;
+            
+            // Get completed semester GPAs
+            const completedGpaInputs = document.querySelectorAll('#completedSemesterInputs input');
+            let totalCompletedGpa = 0;
+            let validCompletedInputs = 0;
+            
+            completedGpaInputs.forEach(input => {
+                const value = parseFloat(input.value);
+                if (!isNaN(value) && value >= 0) {
+                    totalCompletedGpa += value;
+                    validCompletedInputs++;
+                }
+            });
+            
+            if (validCompletedInputs !== completedSemesters) {
+                alert('Please enter valid GPA values for all completed semesters!');
+                return;
+            }
+            
+            // Calculate required GPA for remaining semesters
+            // Formula: (target_cgpa * total_semesters) - total_completed_gpa = required_gpa_sum
+            const requiredTotalGpa = targetCgpa * totalSemesters;
+            const requiredGpaSum = requiredTotalGpa - totalCompletedGpa;
+            const requiredGpaPerSemester = requiredGpaSum / remainingSemesters;
+            
+            // Calculate maximum achievable CGPA
+            const maxPossibleGpaSum = totalCompletedGpa + (remainingSemesters * 10);
+            const maxAchievableCgpa = maxPossibleGpaSum / totalSemesters;
+            
+            const resultContainer = document.getElementById('targetResultContent');
+            
+            if (requiredGpaPerSemester <= 10 && requiredGpaPerSemester >= 0) {
+                // Target is achievable
+                resultContainer.innerHTML = `
+                    <div class="success-card p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">
+                            <i class="fas fa-check-circle mr-2"></i>Target CGPA is Achievable!
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold mb-2">${requiredGpaPerSemester.toFixed(2)}</div>
+                                <div class="text-lg opacity-90">Required GPA per remaining semester</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold mb-2">${targetCgpa.toFixed(2)}</div>
+                                <div class="text-lg opacity-90">Target CGPA</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-sm opacity-90 text-center">
+                            You need to maintain an average GPA of ${requiredGpaPerSemester.toFixed(2)} in your remaining ${remainingSemesters} semester(s) to achieve your target CGPA of ${targetCgpa.toFixed(2)}.
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Target is not achievable
+                resultContainer.innerHTML = `
+                    <div class="warning-card p-6">
+                        <h3 class="text-xl font-bold mb-4 text-center">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Target CGPA is Not Achievable
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold mb-2">${requiredGpaPerSemester.toFixed(2)}</div>
+                                <div class="text-lg opacity-90">Required GPA per semester</div>
+                                <div class="text-sm opacity-75">(Not possible - Max is 10.0)</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold mb-2">${maxAchievableCgpa.toFixed(2)}</div>
+                                <div class="text-lg opacity-90">Maximum Achievable CGPA</div>
+                                <div class="text-sm opacity-75">(If you get 10.0 in all remaining)</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-sm opacity-90 text-center">
+                            Your target CGPA of ${targetCgpa.toFixed(2)} requires ${requiredGpaPerSemester.toFixed(2)} GPA per semester, which exceeds the maximum possible GPA of 10.0. The highest CGPA you can achieve is ${maxAchievableCgpa.toFixed(2)}.
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const resultDiv = document.getElementById('targetResult');
             resultDiv.classList.remove('hidden');
             resultDiv.classList.add('pulse-animation');
             
