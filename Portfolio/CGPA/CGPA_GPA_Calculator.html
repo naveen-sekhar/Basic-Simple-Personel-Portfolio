@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student GPA & CGPA Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .input-focus:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .semester-input, .subject-input {
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .semester-input:focus, .subject-input:focus {
+            background: white;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+        .grade-select {
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .grade-select:focus {
+            background: white;
+            border-color: #667eea;
+        }
+        .subject-row {
+            background: linear-gradient(145deg, #f8fafc, #ffffff);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .subject-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .grade-info {
+            background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 mb-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">
+                <i class="fas fa-graduation-cap mr-3"></i>
+                GPA & CGPA Calculator
+            </h1>
+            <p class="text-xl opacity-90">Calculate your academic performance with ease</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 pb-8">
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- GPA Calculator -->
+            <div class="bg-white rounded-2xl card-shadow p-8">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                        <i class="fas fa-calculator text-2xl text-blue-600"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">GPA Calculator</h2>
+                    <p class="text-gray-600">Calculate Grade Point Average for current semester</p>
+                </div>
+
+                <!-- Grade Point Reference -->
+                <div class="grade-info mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-info-circle mr-2 text-blue-500"></i>Grade Point Reference
+                    </h4>
+                    <div class="grid grid-cols-5 gap-2 text-sm">
+                        <div class="text-center"><span class="font-bold">B</span><br>6 pts</div>
+                        <div class="text-center"><span class="font-bold">B+</span><br>7 pts</div>
+                        <div class="text-center"><span class="font-bold">A</span><br>8 pts</div>
+                        <div class="text-center"><span class="font-bold">A+</span><br>9 pts</div>
+                        <div class="text-center"><span class="font-bold">O</span><br>10 pts</div>
+                    </div>
+                </div>
+
+                <form id="gpaForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-book mr-2 text-green-500"></i>Number of Subjects
+                        </label>
+                        <input type="number" min="1" max="20" id="numSubjects" 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg input-focus transition-all duration-300" 
+                               placeholder="Enter number of subjects" required>
+                    </div>
+
+                    <div id="subjectInputs" class="space-y-4"></div>
+
+                    <button type="submit" id="calculateGpaBtn" class="w-full btn-primary text-white font-semibold py-4 px-6 rounded-lg hidden">
+                        <i class="fas fa-calculator mr-2"></i>Calculate GPA
+                    </button>
+                </form>
+
+                <div id="gpaResult" class="hidden mt-8 result-card p-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4 text-center">
+                        <i class="fas fa-trophy mr-2"></i>Your GPA Result
+                    </h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold mb-2" id="gpaValue">0.00</div>
+                        <div class="text-lg opacity-90" id="gpaPercentage">0.00%</div>
+                        <div class="text-sm opacity-75 mt-2" id="gpaGrade">Grade: N/A</div>
+                    </div>
+                    <div class="mt-4 text-sm opacity-90" id="gpaBreakdown"></div>
+                </div>
+            </div>
+
+            <!-- CGPA Calculator -->
+            <div class="bg-white rounded-2xl card-shadow p-8">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
+                        <i class="fas fa-chart-line text-2xl text-purple-600"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">CGPA Calculator</h2>
+                    <p class="text-gray-600">Calculate Cumulative Grade Point Average</p>
+                </div>
+
+                <form id="cgpaForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-500"></i>Number of Completed Semesters
+                        </label>
+                        <input type="number" min="1" max="20" id="numSemesters" 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg input-focus transition-all duration-300" 
+                               placeholder="Enter number of semesters" required>
+                    </div>
+
+                    <div id="semesterInputs" class="space-y-4"></div>
+
+                    <button type="submit" id="calculateCgpaBtn" class="w-full btn-primary text-white font-semibold py-4 px-6 rounded-lg hidden">
+                        <i class="fas fa-chart-line mr-2"></i>Calculate CGPA
+                    </button>
+                </form>
+
+                <div id="cgpaResult" class="hidden mt-8 result-card p-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4 text-center">
+                        <i class="fas fa-medal mr-2"></i>Your CGPA Result
+                    </h3>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold mb-2" id="cgpaValue">0.00</div>
+                        <div class="text-lg opacity-90" id="cgpaPercentage">0.00%</div>
+                        <div class="text-sm opacity-75 mt-2" id="cgpaGrade">Grade: N/A</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Performance Guide -->
+        <div class="mt-12 bg-white rounded-2xl card-shadow p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                <i class="fas fa-info-circle mr-2 text-blue-500"></i>Academic Performance Guide
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
+                    <div class="text-3xl font-bold text-green-600 mb-2">9.0 - 10.0</div>
+                    <div class="font-semibold text-green-700 mb-1">Outstanding</div>
+                    <div class="text-sm text-green-600">90% - 100%</div>
+                </div>
+                <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">8.0 - 8.9</div>
+                    <div class="font-semibold text-blue-700 mb-1">Excellent</div>
+                    <div class="text-sm text-blue-600">80% - 89%</div>
+                </div>
+                <div class="text-center p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl">
+                    <div class="text-3xl font-bold text-yellow-600 mb-2">7.0 - 7.9</div>
+                    <div class="font-semibold text-yellow-700 mb-1">Very Good</div>
+                    <div class="text-sm text-yellow-600">70% - 79%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Grade point mapping
+        const gradePoints = {
+            'B': 6,
+            'B+': 7,
+            'A': 8,
+            'A+': 9,
+            'O': 10
+        };
+
+        // GPA Calculator - Subject Input Generation
+        document.getElementById('numSubjects').addEventListener('input', function() {
+            const numSubjects = parseInt(this.value);
+            const container = document.getElementById('subjectInputs');
+            const calculateBtn = document.getElementById('calculateGpaBtn');
+            
+            container.innerHTML = '';
+            
+            if (numSubjects > 0 && numSubjects <= 20) {
+                for (let i = 1; i <= numSubjects; i++) {
+                    const div = document.createElement('div');
+                    div.className = 'subject-row';
+                    div.innerHTML = `
+                        <h4 class="font-semibold text-gray-700 mb-3">
+                            <i class="fas fa-book-open mr-2 text-indigo-500"></i>Subject ${i}
+                        </h4>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-2">Grade</label>
+                                <select class="grade-select w-full px-3 py-2 rounded-lg transition-all duration-300" required>
+                                    <option value="">Select Grade</option>
+                                    <option value="B">B (6 points)</option>
+                                    <option value="B+">B+ (7 points)</option>
+                                    <option value="A">A (8 points)</option>
+                                    <option value="A+">A+ (9 points)</option>
+                                    <option value="O">O (10 points)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-2">Credits</label>
+                                <input type="number" min="1" max="10" step="0.5" 
+                                       class="subject-input w-full px-3 py-2 rounded-lg transition-all duration-300" 
+                                       placeholder="Enter credits" required>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                }
+                calculateBtn.classList.remove('hidden');
+            } else {
+                calculateBtn.classList.add('hidden');
+            }
+        });
+
+        // GPA Calculator Form Submit
+        document.getElementById('gpaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const subjectRows = document.querySelectorAll('#subjectInputs .subject-row');
+            let totalGradePoints = 0;
+            let totalCredits = 0;
+            let subjectDetails = [];
+            
+            subjectRows.forEach((row, index) => {
+                const gradeSelect = row.querySelector('select');
+                const creditInput = row.querySelector('input');
+                
+                const grade = gradeSelect.value;
+                const credits = parseFloat(creditInput.value);
+                
+                if (grade && credits > 0) {
+                    const points = gradePoints[grade];
+                    const subjectGradePoints = points * credits;
+                    
+                    totalGradePoints += subjectGradePoints;
+                    totalCredits += credits;
+                    
+                    subjectDetails.push({
+                        subject: index + 1,
+                        grade: grade,
+                        credits: credits,
+                        points: points,
+                        gradePoints: subjectGradePoints
+                    });
+                }
+            });
+            
+            if (totalCredits === 0) {
+                alert('Please enter valid grades and credits for all subjects!');
+                return;
+            }
+            
+            const gpa = totalGradePoints / totalCredits;
+            const percentage = (gpa / 10.0) * 100; // Since max grade point is 10
+            const grade = getGradeFromGPA(gpa);
+            
+            document.getElementById('gpaValue').textContent = gpa.toFixed(2);
+            document.getElementById('gpaPercentage').textContent = percentage.toFixed(2) + '%';
+            document.getElementById('gpaGrade').textContent = `Overall Grade: ${grade}`;
+            
+            // Show breakdown
+            const breakdown = `Total Grade Points: ${totalGradePoints.toFixed(2)} | Total Credits: ${totalCredits}`;
+            document.getElementById('gpaBreakdown').textContent = breakdown;
+            
+            const resultDiv = document.getElementById('gpaResult');
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('pulse-animation');
+            
+            setTimeout(() => {
+                resultDiv.classList.remove('pulse-animation');
+            }, 2000);
+        });
+
+        // CGPA Calculator
+        document.getElementById('numSemesters').addEventListener('input', function() {
+            const numSemesters = parseInt(this.value);
+            const container = document.getElementById('semesterInputs');
+            const calculateBtn = document.getElementById('calculateCgpaBtn');
+            
+            container.innerHTML = '';
+            
+            if (numSemesters > 0 && numSemesters <= 20) {
+                for (let i = 1; i <= numSemesters; i++) {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-bookmark mr-2 text-indigo-500"></i>Semester ${i} GPA
+                        </label>
+                        <input type="number" step="0.01" min="0" max="10" 
+                               class="semester-input w-full px-4 py-3 rounded-lg transition-all duration-300" 
+                               placeholder="Enter GPA for semester ${i}" required>
+                    `;
+                    container.appendChild(div);
+                }
+                calculateBtn.classList.remove('hidden');
+            } else {
+                calculateBtn.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('cgpaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const semesterInputs = document.querySelectorAll('#semesterInputs input');
+            let totalGPA = 0;
+            let validInputs = 0;
+            
+            semesterInputs.forEach(input => {
+                const value = parseFloat(input.value);
+                if (!isNaN(value) && value >= 0) {
+                    totalGPA += value;
+                    validInputs++;
+                }
+            });
+            
+            if (validInputs === 0) {
+                alert('Please enter valid GPA values!');
+                return;
+            }
+            
+            const cgpa = totalGPA / validInputs;
+            const percentage = (cgpa / 10.0) * 100; // Since max GPA is 10
+            const grade = getGradeFromGPA(cgpa);
+            
+            document.getElementById('cgpaValue').textContent = cgpa.toFixed(2);
+            document.getElementById('cgpaPercentage').textContent = percentage.toFixed(2) + '%';
+            document.getElementById('cgpaGrade').textContent = `Overall Grade: ${grade}`;
+            
+            const resultDiv = document.getElementById('cgpaResult');
+            resultDiv.classList.remove('hidden');
+            resultDiv.classList.add('pulse-animation');
+            
+            setTimeout(() => {
+                resultDiv.classList.remove('pulse-animation');
+            }, 2000);
+        });
+
+        function getGradeFromGPA(gpa) {
+            if (gpa >= 9.5) return 'O (Outstanding)';
+            else if (gpa >= 9.0) return 'A+ (Excellent)';
+            else if (gpa >= 8.0) return 'A (Very Good)';
+            else if (gpa >= 7.0) return 'B+ (Good)';
+            else if (gpa >= 6.0) return 'B (Above Average)';
+            else if (gpa >= 5.0) return 'C (Average)';
+            else return 'Below Average';
+        }
+
+        // Add input validation
+        document.addEventListener('input', function(e) {
+            if (e.target.type === 'number') {
+                const min = parseFloat(e.target.min);
+                const max = parseFloat(e.target.max);
+                const value = parseFloat(e.target.value);
+                
+                if (!isNaN(min) && value < min) e.target.value = min;
+                if (!isNaN(max) && value > max) e.target.value = max;
+            }
+        });
+
+        // Add loading animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card-shadow');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
